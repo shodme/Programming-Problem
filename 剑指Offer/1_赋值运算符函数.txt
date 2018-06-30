@@ -1,0 +1,44 @@
+/*
+
+题目要点：
+1.函数返回值应为该类型的引用，并在函数结束前返回*this，只有返回一个引用才能连续赋值；例如返回void就不能连续赋值
+2.传入的参数声明为常量引用  （引用的好处就是避免构造和析构函数调用）
+3.需要释放实例自己已有内存
+4.判断输入参数和当前实例是不是用一个实例
+ 
+ */
+
+
+
+CMyString& CMyString::operator=(const CMyString &str)
+{
+	if(this==&str)
+	{
+		return *this;
+	}
+	
+	delete []m_pData;
+	m_pData = nullptr;
+	
+	m_pData = new char[strlen(str.m_pData)+1];
+	strcpy(m_pData,str.m_pData);
+	
+	return *this;
+}
+
+CMyString& CMyString::operator=(const CMyString &str)
+{
+	if(this!=&str)
+	{
+		CMyString strTemp(str);
+		
+		char* pTemp = strTemp.m_pData;
+		strTemp.m_pData = m_pData;
+		m_pData = pTemp;
+		
+	}
+	
+	
+	return *this;
+	
+}
