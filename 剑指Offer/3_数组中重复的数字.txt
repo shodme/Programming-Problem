@@ -1,0 +1,116 @@
+
+// 面试题3（一）：找出数组中重复的数字
+// 题目：在一个长度为n的数组里的所有数字都在0到n-1的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，
+// 也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。例如，如果输入长度为7的数组{2, 3, 1, 0, 2, 5, 3}，
+// 那么对应的输出是重复的数字2或者3。
+
+
+// 解法1
+// 这种方法的原理是将每个数字放到对应数组下标的位置，然后看有没有多的
+// 方法：从数组下标为零处开始，看该数字是否对应数组下标，如果不对应，则看该数字与其数组位置上的数字是否一致，如果一致，则发现重复数字；
+// 不一致，再继续互换位置，假如换到0对应了数组下标0，则前进一位，对数组下标为1的数字继续刚才的操作
+class Solution {
+public:
+    // Parameters:
+    //        numbers:     an array of integers
+    //        length:      the length of array numbers
+    //        duplication: (Output) the duplicated number in the array number
+    // Return value:       true if the input is valid, and there are some duplications in the array number
+    //                     otherwise false
+    bool duplicate(int numbers[], int length, int* duplication) {
+        
+        // 判断数组是否为空
+        if(numbers==nullptr||length<=0)
+        {
+            return false;
+        }
+        // 判断数组中数是否满足要求
+        for(int i=0;i<length;i++)
+        {
+            if(numbers[i]<0||numbers[i]>length-1)
+            {
+                return false;
+            }
+        }
+        
+        for(int i=0;i<length;i++)
+        {
+            while(numbers[i]!=i)
+            {
+                // 如果相同，找到重复数字
+                if(numbers[i]==numbers[numbers[i]])
+                {
+                    *duplication = numbers[i];
+                    return true;
+                }
+                // 否则交换位置
+                int temp = numbers[i];
+                numbers[i] = numbers[temp];
+                numbers[temp] = temp;
+            }
+            
+        }
+        
+        return false;
+    }
+};
+
+// 解法2：使用哈希表
+class Solution {
+public:
+    // Parameters:
+    //        numbers:     an array of integers
+    //        length:      the length of array numbers
+    //        duplication: (Output) the duplicated number in the array number
+    // Return value:       true if the input is valid, and there are some duplications in the array number
+    //                     otherwise false
+    bool duplicate(int numbers[], int length, int* duplication) {
+        
+		// 判断是否为空
+		if(numbers==nullptr||length<0)
+		{
+			return false;
+			
+		}
+		
+		// 
+		for(int i=0;i<length;i++)
+		{
+			if(numbers[i]<0||numbers[i]>length-1)
+			{
+				return false;
+			}
+			
+		}
+		
+		int hashtable[length];
+		
+		for(int i=0;i<length;i++)
+		{
+			hashtable[i] = 0;
+			
+		}
+		bool flag = false;
+		for(int i=0;i<length;++i)
+		{
+			if(hashtable[numbers[i]]==0)
+			{
+				hashtable[numbers[i]] += 1;
+			}
+			else if(hashtable[numbers[i]]==1)
+			{
+				*duplication = numbers[i];
+				// 如果是应付测试，直接return true;
+				flag = true;
+				hashtable[numbers[i]] += 1;
+			}
+			else
+			{
+				hashtable[numbers[i]] += 1;
+			}
+		}
+		
+		return flag;
+		
+    }
+};
