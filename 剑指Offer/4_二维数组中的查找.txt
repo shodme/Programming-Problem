@@ -1,0 +1,173 @@
+
+// 面试题4：二维数组中的查找
+// 题目：在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按
+// 照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个
+// 整数，判断数组中是否含有该整数。
+
+// 解法1
+class Solution {
+public:
+    bool Find(int target, vector<vector<int> > array) {
+        int flag = false;
+        
+        if(array.empty())
+        {
+            return false;
+        }
+        
+        for(int i=0;i<array.size();i++)
+        {
+            for(int j=0;j<array[i].size();j++)
+            {
+                if(target==array[i][j])
+                {
+                    flag = true;
+                }                
+            }     
+        }
+      
+        return flag;
+    }
+};
+
+
+// 解法1_1
+class Solution1 {
+public:
+    bool Find(int target, vector<vector<int> > array) {
+        int flag = false;
+        
+        if(array.empty())
+        {
+            return false;
+        }
+        
+        for(int i=0;i<array.size();i++)
+        {
+            if ( find(array[i].begin(),array[i].end(),target) != array[i].end() )
+            {
+                flag = true;
+            }
+           
+        }
+      
+        return flag;
+    }
+};
+
+
+// 解法2:从右上角或左下角找
+class Solution2 {
+public:
+    bool Find(int target, int *matrix, int row, int col) {
+		
+		int flag = false;
+		
+		// 判断数组是否为空
+		if(matrix==nullptr||(row<=0&&col<=0))
+		{
+			return false;
+		}
+		
+		// 从右上角开始按列查找
+		int m_row = 0;
+		int m_col = col - 1;
+		
+		for(int j=m_col;j>0;j--)
+		{
+			if(target==matrix[j + m_row*col])//matrix[j + m_row*col]
+			{
+				
+				flag = true;
+			}
+			else if(target>matrix[j + m_row*col])
+			{
+				break;
+			}
+		}
+
+		// 左下角按行查找
+		m_row = row - 1;
+ 		for(int i=m_row;i>=0;i--)
+		{
+			if(target==matrix[j+i*col])//matrix[j+i*col]
+			{
+				
+				flag = true;
+			}
+			else if(target>matrix[j+i*col])
+			{
+				break;
+			}			
+		}
+		
+		
+		return flag;
+    }
+};
+
+// 参考答案
+bool Find(int* matrix, int rows, int columns, int number)
+{
+    bool found = false;
+
+	if(matrix!=nullptr&&rows>0&&columns>0)
+	{
+		int row = 0;
+		int column = columns - 1;
+		
+		while(row<rows&&column>=0)
+		{
+			if(matrix[row*columns+column]==number)
+			{
+				found = true;
+				break;
+			}
+			else if(matrix[row*columns+column]>number)
+			{
+				--column;
+			}
+			else
+				++row;
+			
+		}
+		
+	}
+	
+    return found;
+}
+
+/*
+class Solution {
+public:
+    bool Find(int target, vector<vector<int> > array) {
+    int found = false;
+        
+    int rows = array.size();
+    int columns = array[0].size();
+	if(!array.empty()&&rows>0&&columns>0)
+	{
+		int row = 0;
+		int column = columns - 1;
+		
+		while(row<rows&&column>=0)
+		{
+			if(array[row][column]==target)
+			{
+				found = true;
+				break;
+			}
+			else if(array[row][column]>target)
+			{
+				--column;
+			}
+			else
+				++row;
+			
+		}
+		
+	}
+      
+        return found;
+    }
+};*/
