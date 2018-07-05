@@ -1,0 +1,51 @@
+// 解法1：最慢
+// 思路：从头开始遍历，记录当前子字符串以及子字符串长度
+// 当出现重复字符时，将当前字符串长度与最大字符串长度对比，取最大的那个长度
+// 在字符串s中，从出现重复的那个字符的下一个位置重新开始查找   
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+        if(s=="")
+        {
+            return 0;
+        }
+        
+        string temp = "";
+        int temp_max_len = 0;
+        int max_len = 0;
+        int i = 0;
+        temp = temp + s[i];
+        ++i;
+        ++temp_max_len;
+        
+        while(s[i]!='\0')
+        {
+            // 判断是s[i]在temp中是否有重复的
+            for(int j=0;j<temp_max_len;j++)
+            {
+                if(s[i]==temp[j])
+                {
+                    if(temp_max_len>max_len)
+                    {
+                        max_len = temp_max_len;
+                    }
+                    // 如果碰到相等的，则从相等的那个字符的下一个重新开始计算
+                    i = i-(temp_max_len-j-1);
+                    temp_max_len = 0;
+                    temp = "";
+                    break;
+                }
+            }
+            
+            temp = temp + s[i];
+            ++i;
+            ++temp_max_len;
+        }
+        if(temp_max_len>max_len)
+        {
+            max_len = temp_max_len;
+        }
+        return max_len;
+    }
+};

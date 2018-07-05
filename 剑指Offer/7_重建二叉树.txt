@@ -1,0 +1,173 @@
+
+
+
+BinaryTreeNode* Construct(int* preorder,int* inorder,int length)
+{
+	if(preorder==nullptr||inoder==nulptr||length<=0)
+	{
+		return nullptr;
+	}
+
+	return ConstructCore(preorder,preorder+length-1,inorder,inorder+length-1);
+}
+
+
+BinaryTreeNode* Construct(int* startPreorder,int* endPreorder, int* startInorder,int* endInorder)
+{
+	//先序遍历第一个数字是根节点的值
+	int rootValue = startPreorder[0];
+	BinaryTreeNode* root = new BinaryTreeNode();
+	root->m_nValue = rootValue;
+	root->m_left = root->m_pRight = nullptr;
+	
+	if(startPreorder==endPreorder)
+	{
+		if(startInorder==endInorder&&*startPreorder==*startInorder)
+		{
+			return root;
+		}
+		else
+		{
+			throw exception("Invaild input.");			
+		}
+	}
+	
+	// 在中序遍历中找到根节点的值
+	int* rootInorder = startInorder;
+	while(rootInorder<=endInorder&&*rootInorder!=rootValue)
+		++rootInorder;
+	
+	if(rootInorder==endInorder&&*rootInoder!=rootValue)
+		throw exception(""Invalid input);
+	int leftLength = rootInorder - startorder;
+	int* leftPreorderEnd = startPreorder + leftLength;
+	
+	if(leftLength>0)
+	{
+		// 构建左子树
+		root->m_pLeft = ConstructCore(startPreorder+1,leftPreorderEnd,startInorder,rootInoder-1)
+	}
+	if(leftLength!=endPreorder-startPreorder)
+	{
+		// 构建右子树
+		root->m_pRight = ConstructCore(leftPreorderEnd+1,endPreorder,rootInoder+1,endInorder);
+	}
+	
+	return root;
+}
+
+// 牛客网
+class Solution {
+public:
+
+    
+    TreeNode* ConstructCore(int pre_start,int pre_end,int vin_start,int vin_end,vector<int> pre,vector<int> vin)
+    {
+        //先序遍历第一个数字是根节点的值
+        int rootValue = pre[pre_start];
+        TreeNode* root = (TreeNode*)malloc(sizeof(struct TreeNode));
+        root->val = rootValue;
+        root->left = nullptr;
+        root->right = nullptr;
+        
+        
+        if(pre_start==pre_end&&vin_start==vin_end&&pre[pre_start]==vin[vin_start])
+        {
+                return root;
+        }
+
+       
+        // 在中序遍历中找到根节点的值
+        int root_loc = vin_start;
+        while(vin[root_loc]!=rootValue)
+        {
+            root_loc++;
+        }
+        
+        
+        int leftLength = root_loc - vin_start;
+        int leftpreend = pre_start + leftLength ;
+        
+        if(leftLength>0)
+        {
+            // 构建左子树
+            root->left = ConstructCore(pre_start+1,leftpreend,vin_start,root_loc-1,pre,vin);
+        }
+        if(vin_end-root_loc>0)
+        {
+            // 构建右子树
+            
+            root->right = ConstructCore(leftpreend+1,pre_end,root_loc+1,vin_end,pre,vin);
+        }
+        
+        return root;
+    }
+    
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        if(pre.empty()||vin.empty())
+        {
+            return nullptr;
+        }
+        int prelen = pre.size();
+        int vinlen = vin.size();
+        return ConstructCore(0,prelen-1,0,vinlen-1,pre,vin);
+    }    
+};
+
+public:
+
+    
+    TreeNode* ConstructCore(int pre_start,int pre_end,int vin_start,int vin_end,vector<int> pre,vector<int> vin)
+    {
+        //先序遍历第一个数字是根节点的值
+
+        TreeNode* root = (TreeNode*)malloc(sizeof(struct TreeNode));
+        root->val =  pre[pre_start];
+        root->left = nullptr;
+        root->right = nullptr;
+        
+        
+        if(pre_start==pre_end&&vin_start==vin_end&&pre[pre_start]==vin[vin_start])
+        {
+                return root;
+        }
+
+       
+        // 在中序遍历中找到根节点的值
+        int root_loc = vin_start;
+        while(vin[root_loc]!=pre[pre_start])
+        {
+            root_loc++;
+        }
+        
+        
+        int leftLength = root_loc - vin_start;
+       // int leftpreend = pre_start + root_loc ;
+        
+        if(leftLength>0)
+        {
+            // 构建左子树
+            root->left = ConstructCore(pre_start+1,pre_start + leftLength,vin_start,root_loc,pre,vin);
+        }
+        if(vin_end-root_loc>0)
+        {
+            // 构建右子树
+            
+            root->right = ConstructCore(pre_start + leftLength+1,pre_end,root_loc+1,vin_end,pre,vin);
+        }
+        
+        return root;
+    }
+    
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        
+		
+		if(pre.empty()||vin.empty())
+        {
+            return nullptr;
+        }
+        int prelen = pre.size();
+        int vinlen = vin.size();
+        return ConstructCore(0,prelen-1,0,vinlen-1,pre,vin);
+    }    
+};
