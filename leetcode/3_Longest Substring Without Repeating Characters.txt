@@ -49,3 +49,29 @@ public:
         return max_len;
     }
 };
+
+
+// 思路2：使用哈希表
+// 建立一个256位大小的数组代表哈希表（ASCII码表能表示256个字符）
+// 数组开始都赋值-1，在没遇到重复字符之前，将字符在s中位置赋值到哈希表中
+// 起始位置start设为-1，当出现重复数字时，更新哈希表中数字
+// 起始位置start也设置为哈希表中数字
+// 最大位置就是当前位置-其实起始位置（start设置为-1是因为当i=0时，正好就有一个元素）
+
+
+class Solution {
+public:
+int lengthOfLongestSubstring(string s) {
+		
+		vector<int> dict(256,-1);
+		for(int i=0;i<s.length();i++)
+		{
+			// 有重复数字，起始位置更新成下一个
+			if(dict[s[i]]>start)
+			{
+				start = dict[s[i]];
+			}
+			dict[s[i]] = i;
+			maxlen = max(maxlen,i-start);
+		}
+};

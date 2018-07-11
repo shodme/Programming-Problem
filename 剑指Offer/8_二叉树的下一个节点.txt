@@ -1,0 +1,37 @@
+
+
+BinaryTreeNode* GetNext(BinaryTreeNode* pNode)
+{
+	if(pNode==nullptr)
+	{
+		return nullptr;
+	}
+	
+	
+	BinaryTreeNode* pNext = nullptr;
+	// 如果有右子树
+	if(pNode->m_pRight!=nullptr)
+	{
+		BinaryTreeNode* pRight = pNode->m_pRight;
+		while(pRight->left!=nullptr)
+		{
+			pRight = pRight->left;
+		}
+		
+		pNext = pRight;
+	}
+	else if(pNode->m_pParent!=nullptr)// 如果没有右子树，且是其父节点的左子节点
+	{
+		BinaryTreeNode* pCurrent = pNode;
+		BinaryTreeNode* pParent = pNode->parent;
+		while(pParent!=nullptr&&pCurrent==pParent->m_pRight)
+		{
+			pCurrent = pParent;
+			pParent = pCurrent->m_pParent;	
+			
+		}
+		
+	}
+	
+	return pNext;
+}

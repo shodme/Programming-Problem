@@ -1,0 +1,72 @@
+/*
+template<typename T>class CStack
+{
+public:
+	CStack(void);
+	~CStack(void);
+	
+	void appendRear(const T& node);
+	T deleteFront();
+
+private:
+
+	Queue<T> Queue1;
+	Queue<T> Queue2;
+};
+*/
+
+
+template<typename T>
+void QStack<T>::appendRear(const T& node)
+{
+
+	// 如果都为空，则插入队列1中
+	if(Queue1.size()==0&&Queue2.size()==0)
+	{
+		queue1.push(node);
+	}
+	// 插入到非空对列
+	if(Queue1.size()==0)
+	{
+		queue2.push(node);
+		
+	}
+	else
+	{
+		queue1.push(node);
+	}
+}
+
+
+template<typename T>
+T deleteFront()
+{
+	T Front;
+	if(Queue1.size>0)
+	{
+		while(Queue1.size()>1)
+		{
+			T& data = Queue1.front();
+			Queue1.pop();
+			Queue2.push(data);
+		}
+		// 返回最后一个
+		head = Queue1.front();
+		queue1.pop();
+	}
+	else
+	{
+		while(Queue2.size()>1)
+		{
+			T& data = Queue2.front();
+			Queue2.pop();
+			Queue1.push(data);
+		}
+		// 返回最后一个
+		head = Queue2.front();
+		queue1.pop();
+	}
+	
+	return Front;
+	
+}
