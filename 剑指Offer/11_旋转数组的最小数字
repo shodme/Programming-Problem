@@ -2,6 +2,30 @@
 // 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
 
 
+// 时间复杂度O(n)，直接查找
+
+class Solution {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        int len = rotateArray.size();
+        if(len==0)
+        {
+            return 0;
+        }
+        
+        int min = rotateArray[0];
+        for(int i=1;i<=len-1;i++)
+        {
+            if(rotateArray[i]<min)
+                min = rotateArray[i];
+            
+        }
+        return min;
+        
+    }
+};
+
+// 二分查找，时间复杂度O(nlogn)
 class Solution {
 public:
     int minNumberInRotateArray(vector<int> rotateArray) {
@@ -60,7 +84,7 @@ public:
 
 
 
-
+// 直接查找的一个变种
 class Solution1 {
 public:
     int minNumberInRotateArray(vector<int> rotateArray) {
