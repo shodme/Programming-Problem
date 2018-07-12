@@ -1,0 +1,85 @@
+// 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。
+// 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+
+
+class Solution {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+   
+        int len = rotateArray.size();
+        int begin = 0;
+        int end = len - 1;
+        int min = 0;
+        int mid = 0;
+        
+        while(rotateArray[begin]>=rotateArray[end])
+        {
+            if(end-begin==1)
+            {
+
+                break;
+                
+            }
+            
+            
+            mid = (begin + end ) / 2;
+            
+            // 都相等的情况
+            if(rotateArray[begin]==rotateArray[end]&&rotateArray[begin]==rotateArray[mid])
+                return MinInOrder(rotateArray);
+            
+            if(rotateArray[mid]>=rotateArray[begin])
+            {
+                begin = mid;
+            }
+            if(rotateArray[mid]<=rotateArray[end])
+            {
+                end = mid;
+            }
+        }    
+        min = rotateArray[end];
+        return min;
+    }
+    
+    
+    int MinInOrder(vector<int> rotateArray)
+    {
+        int len = rotateArray.size();
+        int min = rotateArray[0];
+        for(int i=1;i<=len-1;i++)
+        {
+            if(rotateArray[i]<min)
+                min = rotateArray[i];
+            
+        }
+        return min;
+        
+    }
+    
+};
+
+
+
+
+class Solution1 {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        int len = rotateArray.size();
+        if(len==0)
+        {
+            return 0;
+        }
+        
+        int temp = rotateArray[0];
+        for(int i=0;(i<=len-1)&&(i+1<=len-1);i++)
+        {
+            if(rotateArray[i]>rotateArray[i+1])
+            {
+                temp = rotateArray[i+1];
+                break;
+            }
+        }
+        return temp;
+        
+    }
+};
