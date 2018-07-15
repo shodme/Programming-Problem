@@ -1,0 +1,85 @@
+// 给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+
+// 解法1
+class Solution {
+public:
+	
+	// 全局变量 判读是否输入0 负幂
+	bool g_InvalidInput = 0;
+
+    double Power(double base, int exponent) {
+    
+	
+		if(base==0&&exponent<0)
+		{
+			g_InvalidInput = 1;
+			return 0;// 直接返回0
+		}
+	
+	
+        double sum = 1;
+        if(exponent>=0)
+        {
+            for(int i=0;i<exponent;i++)
+            {
+
+                sum = sum * base; 
+            }            
+            
+        }
+        else// 需要考虑指数为负数的情况
+        {
+            exponent = -exponent;
+            for(int i=0;i<exponent;i++)
+            {
+
+                sum = sum * base; 
+            }            
+            sum = 1.0 / sum;
+        }
+
+        return sum;
+    }
+};
+
+// 解法2
+
+class Solution {
+public:
+	double PowerWithUnsignedExponent(double base,unsigned int exponent)
+	{
+		if(exponent==0)
+			return 1;
+		if(exponent==1)
+			return base;
+		
+		double result = PowerWithUnsignedExponent(base,exponent>>1);
+		result  *= result;
+		if(exponent&0x1==1)
+			result *= base;
+		
+		
+		return result;
+		
+	}
+	double Power(double base, int exponent)
+	{
+		g_InvalidInput = false;
+
+		if (equal(base, 0.0) && exponent < 0)
+		{
+			g_InvalidInput = true;
+			return 0.0;
+		}
+
+		unsigned int absExponent = (unsigned int) (exponent);
+		if (exponent < 0)
+			absExponent = (unsigned int) (-exponent);
+
+		double result = PowerWithUnsignedExponent(base, absExponent);
+		if (exponent < 0)
+			result = 1.0 / result;
+
+		return result;
+	}
+};
