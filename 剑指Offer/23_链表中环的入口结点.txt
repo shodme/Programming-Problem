@@ -1,0 +1,72 @@
+//给一个链表，若其中包含环，请找出该链表的环的入口结点，否则，输出null。
+
+
+
+// ***代码目前有bug,能通过正常测试用例，牛客网没通过
+// 思路：1、用一快一慢指针找出环中一个节点（顺便判断是否闭环）2、统计出环中节点个数 3、一个指针前进n个位置，两个指针同时遍历，相等处即为入口
+
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+ListNode* EntryNodeOfLoop(ListNode* pHead)
+{
+	// 判断是否为空
+	if (!pHead)
+	{
+		return nullptr;
+	}
+
+	ListNode* p1 = pHead;
+	ListNode* p2 = pHead->next;
+	if (p2->next == nullptr)
+		return nullptr;
+	else
+		p2 = p2->next;
+
+	while (p1 != p2)
+	{
+		if (p2->next == nullptr)
+			return nullptr;
+		p1 = p1->next;
+		p2 = p2->next;
+		if (p2->next == nullptr)
+			return nullptr;
+		p2 = p2->next;
+
+	}
+	ListNode* p = p2;
+	int len = 1;// 环中节点个数
+	p = p->next;
+
+	while (p != p2)
+	{
+		len++;
+		p = p->next;
+	}
+	// 找出入口节点
+	p1 = p2 = pHead;
+	while (len)
+	{
+		p2 = p2->next;
+		len--;
+	}
+
+	while (p2 != p1)
+	{
+		p2 = p2->next;
+		p1 = p1->next;
+	}
+
+	return p2;
+
+
+}
+};

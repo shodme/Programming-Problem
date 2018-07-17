@@ -1,0 +1,62 @@
+// 输入一个链表，输出该链表中倒数第k个结点。
+
+// 解法1：使用额外空间O(n)
+class Solution1 {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+    
+		if(k<=0||pListHead==nullptr)
+			return nullptr;
+	
+	
+        ListNode* Temp = nullptr;
+        vector<ListNode*> array;
+        while(pListHead)
+        {
+            array.push_back(pListHead);
+            pListHead = pListHead->next;
+        }
+        
+        
+        unsigned int len = array.size();
+        
+        if(len>=k)
+        {
+            Temp = array[len-k];
+        }
+        return Temp;
+    }
+};
+
+// 解法2：两个指针一个做参考
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+
+        if(pListHead==nullptr||k==0)
+            return nullptr;
+        ListNode* p1 = pListHead;
+        ListNode* p2 = pListHead;
+        unsigned int temp = 1;
+        while(temp<k)
+        {
+            if(p1->next)
+            {
+                p1 = p1->next;
+                temp++;
+            }
+            else
+            {
+                return nullptr;
+            }
+
+        }
+        while(p1->next)
+        {
+            p2 = p2->next;
+            p1 = p1->next;
+            
+        }
+        return p2;
+    }
+};

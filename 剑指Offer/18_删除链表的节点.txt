@@ -1,0 +1,83 @@
+/*
+struct ListNode
+{
+	int m_nValue;
+	ListNode* m_pNext;
+};
+*/
+
+
+// **指向指针的指针可以不用return直接返回头结点指针**
+// 解法1：O(1)时间删除节点
+void DeleteNode(ListNode** pListHead,ListNode* pToBeDeleted)
+{
+	if(!pListHead||!pToBeDeleted||!*pListHead)
+		return;
+	
+	// 待删除节点时头结点切仅有一个节点
+	if(pToBeDeleted==*pListHead&&pListHead->m_pNext==nullptr)
+	{
+		pToBeDeleted->m_pNext = nullptr;
+		free(pToBeDeleted);
+		*pListHead = nullptr;
+	}		
+	// 如果是尾节点，需要从头开始遍历
+	else if(pToBeDeleted->m_pNext==nullptr)
+	{
+		ListNode* temp = *pListHead;
+		while(temp->m_pNext)
+		{
+			if(temp->m_pNext==pToBeDeleted)
+			{
+				temp->m_pNext = pToBeDeleted->m_pNext;
+				pToBeDeleted->m_pNext = nullptr;
+				free(pToBeDeleted);
+				return;
+			}
+			temp = temp->m_pNext;
+		}
+		
+	}
+	// 待删除节点不是最后一个(正常删除节点时)
+	else
+	{	
+		ListNode* Temp = pToBeDeleted->m_pNext;
+		pToBeDeleted->m_nValue = Temp->m_nValue;
+		pToBeDeleted->m_pNext = Temp->m_pNext;
+		Temp->m_pNext = nullptr;	
+		free(Temp);		
+	}		
+
+	return;
+}
+
+
+// 不是答案：O(n)时间删除节点（从头开始遍历）
+void DeleteNode(ListNode** pListHead,ListNode* pToBeDeleted)
+{
+	if(!pListHead||!pToBeDeleted||!*pListHead)
+		return;
+
+
+	// 待删除节点时头结点切仅有一个节点
+	if(pToBeDeleted==*pListHead&&pListHead->m_pNext==nullptr)
+	{
+		pToBeDeleted->m_pNext = nullptr;
+		free(pToBeDeleted);
+		*pListHead = nullptr;
+		return;
+	}		
+
+	ListNode* temp = *pListHead;
+	while(temp->m_pNext)
+	{
+		if(temp->m_pNext==pToBeDeleted)
+		{
+			temp->m_pNext = pToBeDeleted->m_pNext;
+			pToBeDeleted->m_pNext = nullptr;
+			free(pToBeDeleted);
+			return;
+		}
+		temp = temp->m_pNext;
+	}
+}

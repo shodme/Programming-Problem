@@ -1,0 +1,57 @@
+// 剑指offer版：输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分
+
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        int len = array.size();
+        int head = 0;
+        int tail = len-1;
+        while(head<tail)
+        {
+            // 找到一个偶数
+            while(array[head]&0x01!=0)
+                head++;
+            // 找到一个奇数
+            while(array[tail]&0x01==0)
+                tail--;
+            
+            swap(array[head],array[tail]);
+            head++;
+            tail--;
+                
+        }
+    }
+    
+    
+    void swap(int &a,int &b)
+    {
+        int temp;
+        temp = a;
+        a = b;
+        b = temp;
+    }
+};
+
+//牛客版：输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+// 第一个思路：类似冒泡算法，前偶后奇数就交换
+// 第二个：再开辟一个数组
+// [思路连接](https://www.nowcoder.com/profile/5858198/codeBookDetail?submissionId=16184791)
+
+class Solution  {
+public:
+    void reOrderArray(vector<int> &array) {
+        vector<int> result;
+        int num=array.size();
+        for(int i=0;i<num;i++)
+        {
+            if((array[i]&0x1)!=0)
+                result.push_back(array[i]);
+        }
+        for(int i=0;i<num;i++)
+        {
+            if((array[i]&0x1)==0)
+                result.push_back(array[i]);
+        }
+        array=result;
+    }
+};
