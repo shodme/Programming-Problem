@@ -1,0 +1,171 @@
+// 输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），
+// 返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if(pHead==nullptr)
+            return nullptr;
+        
+        RandomListNode* H = (RandomListNode*)malloc(sizeof(struct RandomListNode));
+        H->next = nullptr;
+        RandomListNode* pH = pHead;
+        RandomListNode* Head = H;
+        while(pH)
+        {
+            RandomListNode* temp = (RandomListNode*)malloc(sizeof(struct RandomListNode));
+            temp->label = pH->label;
+            temp->next = nullptr;
+            temp->random = nullptr;
+            H->next = temp;
+            H = H->next;            
+            pH = pH->next;        
+        }
+        
+        // 复制random指针
+        pH = pHead;
+        H = Head->next;
+        RandomListNode* t1;
+        RandomListNode* t2;
+        while(pH)
+        {
+            t1 = pHead;
+            t2 = Head->next;
+            if(pH->random!=nullptr)
+            {
+                while(t1!=pH->random)
+                {
+                    t1 = t1->next;
+                    t2 = t2->next;
+                }
+                H->random = t2;
+                
+            }
+            pH = pH->next;
+            H = H->next;
+        }
+        
+        return Head->next;
+            
+    }
+};
+
+// 哈希表
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+      typedef std::map<ComplexListNode*,ComplexListNode*> MAP;
+
+      ComplexListNode* CloneNodes(ComplexListNode* pHead,MAP &hashNode){
+          ComplexListNode* pNode=new ComplexListNode();
+          ComplexListNode* p=pNode;
+          ComplexListNode* tmp;
+
+          while(pHead!=NULL){
+              tmp=new ComplexListNode();
+              tmp->val=pHead->val;
+              p->pNext=tmp;
+              hashNode[pHead]=tmp;
+              pHead=pHead->pNext;
+              p=p->pNext;
+          }
+          return pNode->pNext;
+      }
+
+      void SetSiblings(ComplexListNode* pHead,ComplexListNode* pCopy,MAP &hashNode){
+          while(pCopy!=NULL){
+              pCopy->pSibling=hashNode[pHead->pSibling];
+              pCopy=pCopy->pNext;
+              pHead=pHead->pNext;
+          }
+      }
+
+      ComplexListNode* ComplexListCopy(ComplexListNode* pHead){
+          ComplexListNode* pCopy;
+          MAP hashNode;
+          pCopy=CloneNodes(pHead,hashNode);
+          SetSiblings(pHead,pCopy,hashNode);
+          return pCopy;
+      }          
+    }
+};
+
+// 复制链表方法
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+        void CloneNodes(ComplexListNode* pHead){
+            ComplexListNode* pNode=pHead;
+            ComplexListNode* pCloned;
+            while(pNode!=NULL){
+                pCloned=new ComplexListNode(pNode->val);
+                pNode->pNext=pCloned;
+                pCloned->pNext=pNode->pNext;
+                pNode=pCloned->pNext;
+            }
+        }
+
+        void ConnectSiblingNodes(ComplexListNode* pHead){
+            ComplexListNode* pNode=pHead;
+            ComplexListNode* pCloned;
+            while(pNode!=NULL){
+                pCloned=pNode->pNext;
+                if(pNode->pSibling!=NULL){
+                    pCloned->pSibling=pNode->pSibling->pNext;
+                }
+                pNode=pCloned->pNext;
+            }
+        }
+
+        ComplexListNode* ReconnectNodes(ComplexListNode* pHead){
+            ComplexListNode* pNode=pHead;
+            ComplexListNode* pClonedHead=NULL;
+            ComplexListNode* pClonedNode=NULL;
+
+            if(pNode!=NULL){
+                pClonedHead=pClonedNode=pNode->pNext;
+                pNode->pNext=pClonedNode->pNext;
+                pNode=pNode->pNext;
+            }
+            while(pNode!=NULL){
+                pClonedNode->pNext=pNode->pNext;
+                pClonedNode=pClonedNode->pNext;
+                pNode->pNext=pClonedNode->pNext;
+                pNode=pNode->pNext;
+            }
+            return pClonedHead;
+        }
+
+        ComplexListNode* Clone(ComplexListNode* pHead){
+            CloneNodes(pHead);
+            ConnectSiblingNodes(pHead);
+            return ReconnectNodes(pHead);
+        }
+  
+
+            
+    }
+};
+
+
