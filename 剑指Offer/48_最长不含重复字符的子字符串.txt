@@ -1,0 +1,36 @@
+
+// 如果当前字母位置不在当前最大子串中，最大子串加一；如果在最大子串中，从子串中重复字母位置的下一个重新计算
+
+int longSubstringWithoutDuplication(const std::string& str)
+{
+	if (str.length() == 0)
+		return 0;
+
+	int* position = new int[26];
+	for (int i = 0; i<26; i++)
+		position[i] = -1;
+
+	int maxlen = 0;
+	int curlen = 0;
+
+
+	for (int i = 0; i<str.length();i++)
+	{
+		int temp = position[str[i] - 'a'];
+		if (temp<0 || i - temp>curlen)
+		{
+			curlen++;
+		}
+		else
+		{
+			curlen = i - temp;
+		}
+		position[str[i] - 'a'] = i;
+
+		if (curlen>maxlen)
+			maxlen = curlen;
+
+	}
+	delete[] position;
+	return curlen;
+}

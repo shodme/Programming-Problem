@@ -7,7 +7,7 @@
 // 解法1
 class Solution {
 public:
-    bool Find(int target, vector<vector<int> > array) {
+    bool Find(int target, vector<vector<int>> array) {
         int flag = false;
         
         if(array.empty())
@@ -34,7 +34,7 @@ public:
 // 解法1_1
 class Solution1 {
 public:
-    bool Find(int target, vector<vector<int> > array) {
+    bool Find(int target, vector<vector<int>> array) {
         int flag = false;
         
         if(array.empty())

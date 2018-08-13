@@ -1,0 +1,63 @@
+// 把只包含质因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含质因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+// string相当于vector<char>,无法使用指针
+class Solution {
+public:
+    int FirstNotRepeatingChar(string str) {
+        if(str.length()==0)
+            return -1;
+        
+        const int Size = 256;
+        unsigned int hashtable[Size];
+        
+        for(int i=0;i<Size;i++)
+            hashtable[i] = 0;
+        
+        int num = 0;
+        string temp = str;
+        for(int i=0;i<temp.length();i++)
+        {
+            hashtable[temp[i]]++;
+        }
+        temp = str.data();
+        for(int i=0;i<temp.length();i++)
+        {
+            if(hashtable[temp[i]]==1)
+                return i;
+        }
+        
+        return -1;
+    }
+};
+
+
+class Solution1 {
+public:
+    int FirstNotRepeatingChar(string str) {
+        if(str.length()==0)
+            return -1;
+        
+        const int Size = 256;
+        unsigned int hashtable[Size];
+        
+        for(int i=0;i<Size;i++)
+            hashtable[i] = 0;
+        
+        int num = 0;
+        const char* temp = str.c_str();
+        while(*temp!='\0')
+        {
+            hashtable[*temp++]++;
+        }
+        temp = str.data();
+        int loc = 0;
+        while(*temp!='\0')
+        {
+            if(hashtable[*temp]==1)
+                return loc;
+            temp++;
+            loc++;
+        }
+        
+        return -1;
+    }
+};
