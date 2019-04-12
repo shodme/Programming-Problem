@@ -108,3 +108,115 @@ You may assume the two numbers do not contain any leading zero, except the numbe
   Explanation: 342 + 465 = 807.
   ```
 **思路**
+- 如果链表1和2的长度一致的话，直接相加，如果相加后有进位的话，再增加一位长度；若链表1和2长度不一致的话，两个链表相同长度部分相加，然后将较长的链表多出部分接在后面，如果相加后有进位的话，下一位需要继续加1，直到没有进位为止。一共可以分为如下几种情况：
+（1）长度相等-->相加无进位-->返回
+（2）长度相等-->相加有进位-->新增下一个节点，值为1-->返回
+（3）长度不等-->相加无进位-->长度相等部分相加，多出部分接在后面-->返回
+（4）长度不等-->相加有进位-->长度相等部分相加，多出部分接在后面-->多出的下一位继续加1，直到无进位-->返回
+
+**代码**
+```
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        ListNode* H = new ListNode(0);
+	    ListNode* Head = H;
+        
+        // 进位标志
+        int flag = 0;
+        
+        int temp = 0;
+        
+        while(l1&&l2)
+        {
+            ListNode* Node = new ListNode(0);
+            Node->next = NULL;
+            
+            temp = l1->val + l2->val + flag;
+            // 加完flag后重置
+            flag = 0;
+            Node->val = temp % 10;
+            if(temp>=10)
+            {
+                flag = 1;
+            }
+            H->next = Node;
+            H = H->next;
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+        // 考虑有进位
+        if(flag&&!l2&&!l1)
+        {
+            ListNode* Node = new ListNode(1);
+            Node->next = NULL;
+            H->next = Node;            
+        }
+           
+        if(l2)
+        {
+            H->next = l2;
+            // 考虑有进位
+            if(flag)
+            {
+                while(l2)
+                {
+                    temp = l2->val + flag;
+                    l2->val = temp % 10;
+                    flag = 0;
+                    if(temp>=10)
+                    {
+                        flag = 1;
+                    }
+                    l2 = l2->next;
+                    H = H->next;
+                }
+                if(flag)
+                {
+                    ListNode* Node = new ListNode(1);
+                    Node->next = NULL;
+                    H->next = Node;
+                }             
+            }
+        }
+        
+        if(l1)
+        {
+            H->next = l1;
+            // 考虑有进位
+            if(flag)
+            {
+                while(l1)
+                {
+                    temp = l1->val + flag;
+                    l1->val = temp % 10;
+                    flag = 0;
+                    if(temp>=10)
+                    {
+                        flag = 1;
+                    }
+                    l1 = l1->next;
+                    H = H->next;
+                }
+                if(flag)
+                {
+                    ListNode* Node = new ListNode(1);
+                    Node->next = NULL;
+                    H->next = Node;
+                }             
+            }
+        }
+        return Head->next;
+    }
+};
+```
+
