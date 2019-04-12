@@ -68,7 +68,7 @@ public:
 时间复杂度为O(n)，所以思路2速度更快，缺点是需要开辟哈希表map而占用O(n)的空间复杂度。
 
 **代码**
-```
+```C++
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
