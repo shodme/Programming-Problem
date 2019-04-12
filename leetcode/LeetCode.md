@@ -39,7 +39,7 @@ You may assume that each input would have exactly one solution, and you may not 
 nums[i]+nums[j]的和等于target的时且i不等于j，[i j]即为所求。
 
 **代码**
-```
+```C++
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -119,7 +119,7 @@ You may assume the two numbers do not contain any leading zero, except the numbe
 （4）长度不等-->相加有进位-->长度相等部分相加，多出部分接在后面-->多出的下一位继续加1，直到无进位-->返回
 
 **代码**
-```
+```C++
 /**
  * Definition for singly-linked list.
  * struct ListNode {
