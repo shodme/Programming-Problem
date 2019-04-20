@@ -8,7 +8,7 @@
 **Index**
 ---
 - [3.1 数组中重复的数字](#31-数组中重复的数字)
-- []
+- [3.2 不修改数组找出重复数字](#32-不修改数组找出重复数字)
 - []
 - []
 
@@ -105,4 +105,60 @@ public:
     }
 };
 ```
+## 3.2 不修改数组找出重复数字
 
+**题目描述**
+```
+在一个长度为n+1的数组里的所有数字都在1到n的范围内，所以数组中至少有一个数字是重复的。
+请找出数组中任意一个重复的数字，但不能修改输入的数组。
+例如，如果输入长度为8的数组{2, 3, 5, 4, 3, 2, 6, 7}，那么对应的输出是重复的数字2或者3。
+```
+
+**思路**
+- 可以和3.1中一样开辟一个哈希表，但是需要占O(n)的空间复杂度。
+- 对数组进行二分查找，每次划分后都统计两边数字出现个数是否和划分大小一致，若不一致，就继续划分，直到找到那个重复数字。
+
+**代码**
+```C++
+class Solution {
+public:
+	int duplicate(int numbers[], int length) {
+		if (numbers == nullptr || length <= 0)    return 0;
+		for (int i = 0; i<length; i++)
+		{
+			if (numbers[i]>length || numbers[i]<0)    return 0;
+		}
+
+		int begin = 1;
+		int end = length - 1;
+		int middle, count;
+		while (begin <= end)
+		{
+			middle = (begin + end) / 2;
+			count = countnumber(numbers, length, begin, middle);
+			if (begin == end)
+			{
+				if (count > 1)
+					return begin;
+				else
+					break;
+			}
+			if (count == middle - begin + 1)
+				begin = middle + 1;
+			else
+				end = middle;
+		}
+		return 0;
+	}
+	int countnumber(const int* numbers, int length, int begin, int end)
+	{
+		int count = 0;
+		for (int i = 0; i<length; i++)
+		{
+			if (numbers[i] >= begin&&numbers[i] <= end)
+				++count;
+		}
+		return count;
+	}
+};
+```
