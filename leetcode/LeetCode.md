@@ -9,7 +9,7 @@ LeetCode
 ---
 - [1. Two Sum](#1-Two-Sum)
 - [2. Add Two Numbers](#2-Add-Two-Numbers)
-- []
+- [3. Longest Substring Without Repeating Characters](#3-Longest-Substring-Without-Repeating-Characters)
 - []
 - []
 
@@ -107,16 +107,13 @@ You may assume the two numbers do not contain any leading zero, except the numbe
   
   Explanation: 342 + 465 = 807.
   ```
+  
 **思路**
 - 如果链表1和2的长度一致的话，直接相加，如果相加后有进位的话，再增加一位长度；若链表1和2长度不一致的话，两个链表相同长度部分相加，然后将较长的链表多出部分接在后面，如果相加后有进位的话，下一位需要继续加1，直到没有进位为止。一共可以分为如下几种情况：
-
-（1）长度相等-->相加无进位-->返回
-
-（2）长度相等-->相加有进位-->新增下一个节点，值为1-->返回
-
-（3）长度不等-->相加无进位-->长度相等部分相加，多出部分接在后面-->返回
-
-（4）长度不等-->相加有进位-->长度相等部分相加，多出部分接在后面-->多出的下一位继续加1，直到无进位-->返回
+  - 长度相等-->相加无进位-->返回
+  - 长度相等-->相加有进位-->新增下一个节点，值为1-->返回
+  - 长度不等-->相加无进位-->长度相等部分相加，多出部分接在后面-->返回
+  - 长度不等-->相加有进位-->长度相等部分相加，多出部分接在后面-->多出的下一位继续加1，直到无进位-->返回
 
 **代码**
 ```C++
@@ -224,3 +221,68 @@ public:
 };
 ```
 
+## 3. Longest Substring Without Repeating Characters
+> [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+**题目描述**
+```
+Given a string, find the length of the longest substring without repeating characters.
+```
+- 示例
+  ```
+  Input: "abcabcbb"
+  Output: 3 
+  Explanation: The answer is "abc", with the length of 3. 
+  
+  Input: "bbbbb"
+  Output: 1
+  Explanation: The answer is "b", with the length of 1.
+  
+  Input: "pwwkew"
+  Output: 3
+  Explanation: The answer is "wke", with the length of 3. 
+  Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+  ```
+
+**思路**
+- 这里使用动态规划的思路求解，假设f(i)代表字符串中第i个位置处不包含重复字符的最大子字符串长度，显然第一个字符位置f(0)=1，为了求出f(i)，我们需要知道f(i-1)。这里d表示第i个字符与它上次出现在字符串位置的距离，f(i)与f(i-1)之间关系可以表示如下：
+  - 当d大于f(i-1)，f(i)=d
+  - 当d小于等于f(i-1)，f(i)=f(i-1)+1
+  
+**代码**
+```C++
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int maxlen = 0;
+        int curlen = 0;
+
+        int position[128] = {0};
+        for(int i=0;i<128;i++)
+        {
+            position[i] = -1;    
+        }
+
+        for(int i=0;i<s.length();i++)
+        {
+            int prevIndex = position[s[i]];
+            if(prevIndex<0||i-prevIndex>curlen)
+            {
+                ++curlen;
+            }
+            else
+            {
+                if(curlen>maxlen)
+                    maxlen = curlen;
+                curlen = i - prevIndex;
+            }
+            position[s[i]] = i;
+        }
+
+        if(curlen>maxlen)
+            maxlen = curlen;
+
+        return maxlen;
+    }
+};
+```
