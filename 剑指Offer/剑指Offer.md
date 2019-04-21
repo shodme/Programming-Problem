@@ -9,7 +9,7 @@
 ---
 - [3.1 数组中重复的数字](#31-数组中重复的数字)
 - [3.2 不修改数组找出重复数字](#32-不修改数组找出重复数字)
-- []
+- [4. 二维数组中的查找](#4-二维数组中的查找)
 - []
 
 
@@ -160,5 +160,40 @@ public:
 		}
 		return count;
 	}
+};
+```
+
+# 4. 二维数组中的查找
+> [二维数组中的查找](https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e?tpId=13&tqId=11154&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+```
+
+**思路**
+- 如果从二维数组的**左上角**开始找起，当目标数字大于左上点时，满足下一步查找条件的区域在该点的下方或者右方，这样会使得查找方向有分歧，问题变得复杂。从**右下角**开始查找同理。
+- 如果从二维数组的**右上角**开始找起，当目标数字大于右上角点时，满足下一步查找的区域只会在下方，而小于右上角点的区域只会在左方，这样查找不会存在分歧，一行一列的逐步排除，可以逐步缩小查找区域。从**左下角**查找同理。
+
+**代码**
+```C++
+class Solution {
+public:
+    bool Find(int target, vector<vector<int>> array) {
+        if (array.empty())
+		    return 0;
+        int i = 0;
+        int j = array[0].size() - 1;
+        while (i<array.size() && j>=0)
+        {
+            if (target == array[i][j])
+                return 1;
+            if (target > array[i][j])
+                i++;
+            else
+                j--;
+        }
+        return 0;
+    }
 };
 ```
