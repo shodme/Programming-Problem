@@ -10,6 +10,7 @@
 - [3.1 数组中重复的数字](#31-数组中重复的数字)
 - [3.2 不修改数组找出重复数字](#32-不修改数组找出重复数字)
 - [4. 二维数组中的查找](#4-二维数组中的查找)
+- [5. 替换空格](#5-替换空格)
 - []
 
 
@@ -163,7 +164,7 @@ public:
 };
 ```
 
-# 4. 二维数组中的查找
+## 4. 二维数组中的查找
 > [二维数组中的查找](https://www.nowcoder.com/practice/abc3fe2ce8e146608e868a70efebf62e?tpId=13&tqId=11154&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
 
 **题目描述**
@@ -195,5 +196,71 @@ public:
         }
         return 0;
     }
+};
+```
+
+## 5. 替换空格
+>[替换空格](https://www.nowcoder.com/practice/4060ac7e3e404ad1a894ef3e17650423?tpId=13&tqId=11155&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+请实现一个函数，将一个字符串中的空格替换成“%20”。
+例如，当字符串为 "We Are Happy". 则经过替换之后的字符串为 "We%20Are%20Happy"。
+```
+
+- 示例
+```
+original string -- "We are happy."
+replaced string -- "We%20are%20happy."
+```
+
+**思路**
+- 第一种是从后向前遍历字符串，遇到空格位置将空格后面字符串后移两位，对应空格位置替换为%20，每次移动的时间复杂度为O(n)，因此总的时间复杂度为O(n^2)。
+- 第二种思路是首先统计字符串中空格的数量n，替换后字符串长度为len=len0+2\*n。因为从前往后替换的方法会使后面的字符被覆盖掉，因此需要从后向前替换。每当遇到空格时，就需要将len长度减3，对应空格位置替换为%20，len0长度减1。这种方法的时间复杂度为O(n)。
+
+
+**代码**
+```C++
+class Solution {
+public:
+	void replaceSpace(char *str,int length) {
+		// length 为数组总容量
+		if(str==nullptr||length<=0)
+		{
+		    return;
+		}
+		int count = 0;
+		int len = 0;
+		while(str[len]!='\0')
+		{
+		    if(str[len]==' ')
+		    {
+			++count;
+		    }
+		    ++len;
+		}
+
+		int newlen = len + 2 * count;
+
+		if(newlen>length)
+		{
+		    return;
+		}
+
+		while (len >= 0 && newlen>len)
+		{
+		    if (str[len] == ' ')
+		    {
+			str[newlen--] = '0';
+			str[newlen--] = '2';
+			str[newlen--] = '%';
+		    }
+		    else
+		    {
+			str[newlen--] = str[len];
+		    }
+		    --len;
+		}
+	}
 };
 ```
