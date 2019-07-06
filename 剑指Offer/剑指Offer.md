@@ -11,7 +11,10 @@
 - [3.2 不修改数组找出重复数字](#32-不修改数组找出重复数字)
 - [4. 二维数组中的查找](#4-二维数组中的查找)
 - [5. 替换空格](#5-替换空格)
-- []
+- [53.1 数字在排序数组中出现的次数（二分查找）](#531-数字在排序数组中出现的次数)
+- [53.2 0~n-1中缺失的数字（二分查找）](#532-0~n-1中缺失的数字)
+- [53.3 数组中数值和下标相等的元素（二分查找）](#533-数组中数值和下标相等的元素)
+-
 
 
 
@@ -264,3 +267,173 @@ public:
 	}
 };
 ```
+
+## 53.1 数字在排序数组中出现的次数
+>[数字在排序数组中出现的次数](https://www.nowcoder.com/practice/70610bf967994b22bb1c26f9ae901fa2tpId=13&tqId=11190&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+统计一个数字在排序数组中出现的次数
+```
+
+**思路**
+- 可以顺序统计数组中目标数字出现个数，每出现一个总数加1，时间复杂度为O(n)
+- 但是在本题中出现了**排序数组**这个额外的条件，因此可以考虑使用最小二乘法，这样时间复杂度为O(logn)
+- 我们可以使用最小二乘法查找目标数字第一次出现的位置，当数组中间值等于目标数字，且前一个数字也等于目标数字时，那第一次出现位置肯定在前半段，继续在前半段查找；最后一次出现位置同理，最后出现的总次数时最后一次出现位置减第一次出现位置加1。
+
+**代码**
+```C++
+class Solution {
+public:
+    int GetFirstK(vector<int> data,int k,int begin,int end)
+    {
+        int mid;
+        while(begin<=end)
+        {
+            mid = (begin + end) / 2;
+            if(data[mid]==k)
+            {
+                if(data[mid-1]!=k||mid==0)
+                {
+                    return mid;
+                }
+                else
+                {
+                    end = mid - 1;
+                }
+            }
+            else if(data[mid]>k)
+            {
+                end = mid - 1;
+            }
+            else
+            {
+                begin = mid + 1;
+            }
+        }
+        return -1;
+    }
+    int GetLastK(vector<int> data,int k,int begin,int end)
+    {
+        int mid;
+        while(begin<=end)
+        {
+            mid = (begin + end) / 2;
+            
+            if(data[mid]==k)
+            {
+                if(data[mid+1]!=k||mid==end)
+                {
+                    return mid;
+                }
+                else
+                {
+                    begin = mid + 1;
+                }
+            }
+            else if(data[mid]>k)
+            {
+                end = mid - 1;
+            }
+            else
+            {
+                begin = mid + 1;
+            }
+        }
+        return -1;
+    }
+    int GetNumberOfK(vector<int> data ,int k) {
+        int len = data.size();
+        if(len<=0)
+            return 0;
+        int count = 0;
+        int first = GetFirstK(data,k,0,len-1);
+        int last = GetLastK(data,k,0,len-1);
+        if(first>-1&&last>-1)
+            count = last - first + 1;
+        return count;
+    }
+};
+```
+
+## 53.2 0~n-1中缺失的数字
+
+**题目描述**
+```
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0~n-1之内，在范围0~n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+```
+
+**思路**
+- 假设第k个数字不在数组中，那么k之前的每个数字肯定等于其对应的序号，即0对应序号0，1对应序号1，我们只需要找出第一个数字与其序号对应不一致的位置，即为该缺失的数字。
+
+**代码**
+```C++
+int GetMissingNumber(vector<int> data)
+{
+    int len = data.size();
+    int begin = 0;
+    int end = len - 1;
+    int mid;
+    while(begin<=end)
+    {
+    	mid = (begin + end) / 2;
+	if(data[mid]!=mid)
+	{
+	    if(data[mid-1]==mid-1||mid==0)
+	        return mid;
+	    end = mid - 1;
+	}
+	else
+	{
+	    start = mid + 1;
+	}
+	
+    }
+    return -1;
+}
+```
+
+## 53.3 数组中数值和下标相等的元素
+
+**题目描述**
+```
+假设一个单调递增的数组里的每个元素都是整数并且是唯一的。请编程实现一个函数，找出数组中任意一个数值等于其下标的元素。
+```
+
+- 示例
+```
+在数组{-3，-1，1，3，5}中，数字3和它的下标相等。
+```
+
+**思路**
+- 因为**单调递增**数组，使用二分查找
+
+**代码**
+```C++
+int GetNumberSameAsIndex(vector<int> data)
+{
+    int len = data.size();
+    int begin = 0;
+    int end = len - 1;
+    int mid;
+    while(begin<=end)
+    {
+    	mid = (begin + end) / 2;
+	if(data[mid]==mid)
+	{
+	    return mid;
+	}
+	else if(data[mid]>mid)
+	{
+	    end = mid - 1;
+	}
+	else
+	{
+	    start = mid + 1;
+	}
+    }
+    return -1;
+}
+```
+
+
