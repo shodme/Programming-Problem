@@ -7,6 +7,7 @@
 
 **Index**
 ---
+- [1 文档模板](#1-文档模板)
 - [3.1 数组中重复的数字](#31-数组中重复的数字)
 - [3.2 不修改数组找出重复数字](#32-不修改数组找出重复数字)
 - [4. 二维数组中的查找](#4-二维数组中的查找)
@@ -14,8 +15,33 @@
 - [53.1 数字在排序数组中出现的次数（二分查找）](#531-数字在排序数组中出现的次数)
 - [53.2 0到n-1中缺失的数字（二分查找）](#532-0到n-1中缺失的数字)
 - [53.3 数组中数值和下标相等的元素（二分查找）](#533-数组中数值和下标相等的元素)
+- [56.1 数组中只出现一次的数字]（#561-数组中只出现一次的数字）
+- [56.2 ](#562-数组中唯一只出现一次的数字)
+- [57.1 ](#571-和为s的两个数字)
+- [57.2 和为S的连续正数序列](#572-和为s的连续正数序列)
+-
+-
+-
+-
 -
 
+
+
+## 1. 文档模板
+>[]
+
+**题目描述**
+```
+```
+- 示例
+  ```
+  ```
+**思路**
+- 
+
+**代码**
+```C++
+```
 
 
 ## 3.1 数组中重复的数字
@@ -406,7 +432,7 @@ int GetMissingNumber(vector<int> data)
 ```
 
 **思路**
-- 因为**单调递增**数组，使用二分查找
+- 因为**单调递增**数组，使用二分查找。若二分查找到的下标等于目标数字，返回这个数。如果目标数字大于当前查找的下标，因为数组中值是单调递增的，而数组下标也是逐一递增的，**目标数组的增长速度肯定要大于等于下标增长速度**，当前下标右边的数字肯定要大于右边下标，因此只需要再当前下标的左边查找即可；如果目标数字小于当前查找的下标，因为**目标数组的下降速度肯定要大于等于下标下降速度**，因此当前下标左边的数字肯定要小于左边下标，因此只需要再当前下标的右边查找即可。
 
 **代码**
 ```C++
@@ -436,4 +462,171 @@ int GetNumberSameAsIndex(vector<int> data)
 }
 ```
 
+## 56.1 数组中只出现一次的数字
+>[数组中只出现一次的数字](https://www.nowcoder.com/practice/e02fdb54d7524710a7d664d082bb7811?tpId=13&tqId=11193&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
 
+**题目描述**
+```
+一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+```
+
+**思路**
+- 首先如果在一个只有一个数字不同的数组中找到那个唯一不同的数字，只需要对数组中每个数字进行异或操作，这样相同数字会被抵消，只剩下那个唯一数字。
+- 我们将数组中每一个数字进行异或操作，除了那两个不同的数字以外，其他数字都会被消掉。因为剩下两个不同的数字，最后结果肯定不为零，结果数字的二进制表示中肯定有一位是1。我们可以先找到第一个为1的位的位置，然后根据所有数字该位置时候为1将整个数组分成两个子数组，因为相同数字该位肯定一样，而那两个不同数字该位肯定不一样，这样我们就可以将这两个数组分别放入一个子数组中了。对子数组中每个数字分别进行异或操作，根据前面所述，就可以将那两个不同的数字分别找到。
+
+**代码**
+```C++
+class Solution {
+public:
+    int FindFirstBitIs1(int num)
+    {
+        int Index = 0;
+        while(((num&1)==0)&&(Index<8*sizeof(int)))
+        {
+            num = num >> 1;
+            ++Index;
+        }
+        return Index;
+    }
+    
+    bool IsBit1(int num,int Index)
+    {
+        num = num >> Index;
+        return (num & 1);
+    }
+    
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        int len = data.size();
+        int result = 0;
+        for(int i=0;i<len;i++)
+        {
+            result ^= data[i];
+        }
+        int Index = FindFirstBitIs1(result);
+        
+        *num1 = *num2 = 0;
+        
+        for(int i=0;i<len;i++)
+        {
+            if(IsBit1(data[i],Index))
+            {
+                *num1 ^= data[i];
+            }
+            else
+            {
+                *num2 ^= data[i];
+            }
+        }
+    }
+};
+```
+
+## 56.2 数组中唯一只出现一次的数字
+
+**题目描述**
+```
+在一个数组中除了一个数字只出现一次以外，其他数字都出现了三次。请找出那个只出现一次的数字。
+```
+
+**思路**
+- 
+
+**代码**
+```C++
+```
+
+## 57.1 和为s的两个数字
+>[和为s的两个数字](https://www.nowcoder.com/practice/390da4f7a00f44bea7c2f3d19491311b?tpId=13&tqId=11195&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
+```
+**思路**
+- 
+
+**代码**
+```C++
+class Solution {
+public:
+    vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+        int len = array.size();
+        int small = 0;
+        int large = len - 1;
+        int min_value = pow(2,31) - 1;
+        vector<int> result;
+        while(small<large)
+        {
+            if(array[small]+array[large]==sum)
+            {
+                if(array[small]*array[large]<min_value)
+                {
+                    min_value = array[small]*array[large];
+                    result.push_back(array[small]);
+                    result.push_back(array[large]);
+                }
+                ++small;
+            }
+            else if(array[small]+array[large]>sum)
+            {
+                --large;
+            }
+            else
+            {
+                ++small;
+            }
+        }
+        return result;
+    }
+};
+```
+
+## 57.2 和为s的连续正数序列
+>[和为s的连续正数序列](https://www.nowcoder.com/practice/c451a3fd84b64cb19485dad758a55ebe?tpId=13&tqId=11194&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目示例**
+```
+小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,他马上就写出了正确答案是100。但是他并不满足于此,他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。没多久,他就得到另一组连续正数和为100的序列:18,19,20,21,22。现在把问题交给你,你能不能也很快的找出所有和为S的连续正数序列? Good Luck!
+```
+
+**思路**
+-
+
+**代码**
+```C++
+class Solution {
+public:
+    vector<vector<int> > FindContinuousSequence(int sum) {
+        vector<vector<int>> result;
+        int small = 1;
+        int large = 2;
+        int tol = small + large;;
+        int mid = (sum + 1) / 2;
+        while(small<mid)
+        {
+            if(tol==sum)
+            {
+                vector<int> tmp;
+                for(int i=small;i<=large;i++)
+                {
+                    tmp.push_back(i);
+                }
+                result.push_back(tmp);
+                tol -= small;
+                ++small;
+            }
+            else if(tol>sum)
+            {
+                tol -= small;
+                ++small;
+            }
+            else
+            {
+                large++;
+                tol += large;
+            }
+        }
+        return result;
+    }
+};
+```
