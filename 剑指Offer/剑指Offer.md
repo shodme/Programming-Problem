@@ -19,7 +19,8 @@
 - [56.2 数组中唯一只出现一次的数字](#562-数组中唯一只出现一次的数字)
 - [57.1 和为s的两个数字](#571-和为s的两个数字)
 - [57.2 和为S的连续正数序列](#572-和为s的连续正数序列)
--
+- [58.1 翻转单词顺序](#581-翻转单词顺序)
+- [58.2 左旋转字符串](#582-左旋转字符串)
 -
 -
 -
@@ -584,7 +585,7 @@ public:
 ## 57.2 和为s的连续正数序列
 >[和为s的连续正数序列](https://www.nowcoder.com/practice/c451a3fd84b64cb19485dad758a55ebe?tpId=13&tqId=11194&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
 
-**题目示例**
+**题目描述**
 ```
 小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,他马上就写出了正确答案是100。但是他并不满足于此,他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。没多久,他就得到另一组连续正数和为100的序列:18,19,20,21,22。现在把问题交给你,你能不能也很快的找出所有和为S的连续正数序列? Good Luck!
 ```
@@ -627,6 +628,101 @@ public:
             }
         }
         return result;
+    }
+};
+```
+
+# 58.1 翻转单词顺序
+>[翻转单词顺序](https://www.nowcoder.com/practice/3194a4f4cf814f63919d0790578d51f3?tpId=13&tqId=11197&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，写些句子在本子上。同事Cat对Fish写的内容颇感兴趣，有一天他向Fish借来翻看，但却读不懂它的意思。例如，“student. a am I”。后来才意识到，这家伙原来把句子单词的顺序翻转了，正确的句子应该是“I am a student.”。Cat对一一的翻转这些单词顺序可不在行，你能帮助他么？
+```
+
+**思路**
+- 
+
+**代码**
+```C++
+class Solution {
+public:
+    void Reverse(string &str,int begin,int end)
+    {
+        char tmp;
+        while(begin<end)
+        {
+            tmp = str[begin];
+            str[begin] = str[end];
+            str[end] = tmp;
+            begin++;
+            end--;
+        }
+    }
+    string ReverseSentence(string str) {
+        int len = str.length();
+        int begin = 0;
+        int end = len - 1;
+        Reverse(str,begin,end);
+        begin = end = 0;
+        while(str[begin]!='\0')
+        {
+            if(str[begin]==' ')
+            {
+                begin++;
+                end++;
+            }
+            if(str[end]==' '||str[end]=='\0')
+            {
+                Reverse(str,begin,end-1);
+                begin = end;
+                end++;
+            }
+            else
+            {
+                end++;
+            } 
+        }
+        return str;
+    }
+};
+```
+
+# 58.2 左旋转字符串
+>[左旋转字符串](https://www.nowcoder.com/practice/12d959b108cb42b1ab72cef4d36af5ec?tpId=13&tqId=11196&tPage=1&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking)
+
+**题目描述**
+```
+汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，就是用字符串模拟这个指令的运算结果。对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。是不是很简单？OK，搞定它！
+```
+
+**思路**
+- 
+
+**代码**
+```C++
+class Solution {
+public:
+    void Reverse(string &str,int begin,int end)
+    {
+        char temp;
+        while(begin<end)
+        {
+            temp = str[begin];
+            str[begin] = str[end];
+            str[end] = temp;
+            begin++;
+            end--;
+        }
+    }
+    string LeftRotateString(string str, int n) {
+        int len = str.length();
+        if(len==0||n==0)
+            return str;
+        Reverse(str,0,n-1);
+        Reverse(str,n,len-1);
+        Reverse(str,0,len-1);
+        return str;
     }
 };
 ```
